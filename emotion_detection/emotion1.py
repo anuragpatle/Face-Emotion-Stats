@@ -74,9 +74,54 @@ def emotionImage(imgPath):
 
         # make a prediction on the ROI, then lookup the class
         preds = classifier.predict(roi)[0]
-        print("preds: ", preds)
-        label = class_labels[preds.argmax()]
-        label_position = (rects[i][0] + int((rects[i][1] / 2)), abs(rects[i][2] - 10))
+
+        print("type of preds: ", type(preds))
+
+        # convert numpy array to dictionary
+        # predsDict = dict(enumerate(preds.flatten(), 0))
+        # print("preds: ", predsDict)
+
+        predsDict = { }
+
+        # class_labels = {0: 'Angry', 1: 'Fear', 2: 'Happy', 3: 'Neutral', 4: 'Sad', 5: 'Surprise'}
+        for i in range(len(preds)):
+
+            if i == 0:
+                predsDict["Angry"] = preds[i]
+            if i == 1:
+                predsDict["Fear"] = preds[i]
+            if i == 2:
+                predsDict["Happy"] = preds[i]
+            if i == 3:
+                predsDict["Neutral"] = preds[i]
+            if i == 4:
+                predsDict["Sad"] = preds[i]
+            if i == 5:
+                predsDict["Surprised"] = preds[i]
+
+        print("preds: ", predsDict)
+
+        sortedpredsDict = dict(sorted(predsDict.items(), key = lambda x: x[1], reverse=True)) # , reverse=True
+
+        print("sortedpredsDict: ", sortedpredsDict)
+
+        label = "no_emotion"
+
+        listsortedpreds = list(sortedpredsDict);
+
+        if listsortedpreds[0] == "Happy":
+            label = "likely_happy"
+        elif listsortedpreds[0] == "Neutral" and listsortedpreds[1] == "Happy":
+            label = "likely_happy"
+        elif listsortedpreds[0] == "Surprised" and listsortedpreds[1] == "Happy":
+            label = "likely_happy" 
+        else:
+            label = "likely_not_happy"
+
+        print("Final Emotion: ", label)
+
+        # label = class_labels[preds.argmax()]
+        # label_position = (rects[i][0] + int((rects[i][1] / 2)), abs(rects[i][2] - 10))
         i = + 1
 
         # Overlay our detected emotion on the picture
@@ -143,8 +188,12 @@ def emotionVideo(cap):
     cap.release()
     cv2.destroyAllWindows()
 
-
+def test_dict():
+    d = {"b": 2, "a": 1,  "c": 3}
     
+    sorted(d.items(), key=lambda x: x[1])
+
+    print(d)
 
 if __name__ == '__main__':
 
@@ -153,3 +202,6 @@ if __name__ == '__main__':
 
     IMAGE_PATH = "./emotion_detection/images/girl_smiling_1.jpg"
     emotionImage(IMAGE_PATH) # If you are using this on an image please provide the path
+
+
+    # test_dict()

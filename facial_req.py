@@ -119,7 +119,7 @@ class FaceRecognize:
                             .8, (0, 255, 255), 2)
 
             # display the image to our screen
-            # cv2.imshow("Facial Recognition is Running", frame)
+            cv2.imshow("Facial Recognition is Running", frame)
 
             
 
