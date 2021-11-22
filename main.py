@@ -2,6 +2,8 @@ from headshots import capture_headshots
 from train_model import train_for_facial_recog
 from facial_req import FaceRecognize
 from emotion_detection.emotion1 import *
+import cv2
+
 
 face_recognize = FaceRecognize(False)
 
@@ -32,7 +34,7 @@ face_recognize = FaceRecognize(False)
 #         print("after is new face: ", face_recognize.isNewFace)
 
     
-import cv2
+
 
 cam = cv2.VideoCapture(0)
 
