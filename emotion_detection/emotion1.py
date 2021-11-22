@@ -53,6 +53,7 @@ def face_detector_image(img):
     allfaces = []
     rects = []
     for (x, y, w, h) in faces:
+        # x = left, y = top, x + w = right, y+h = bottom
         cv2.rectangle(img, (x, y), (x + w, y + h), (0, 255, 0), 2)
         roi_gray = gray[y:y + h, x:x + w]
         roi_gray = cv2.resize(roi_gray, (48, 48), interpolation=cv2.INTER_AREA)
@@ -74,8 +75,6 @@ def emotionImage(imgPath):
 
         # make a prediction on the ROI, then lookup the class
         preds = classifier.predict(roi)[0]
-
-        print("type of preds: ", type(preds))
 
         # convert numpy array to dictionary
         # predsDict = dict(enumerate(preds.flatten(), 0))
@@ -107,7 +106,7 @@ def emotionImage(imgPath):
 
         label = "no_emotion"
 
-        listsortedpreds = list(sortedpredsDict);
+        listsortedpreds = list(sortedpredsDict)
 
         if listsortedpreds[0] == "Happy":
             label = "likely_happy"
@@ -121,7 +120,7 @@ def emotionImage(imgPath):
         print("Final Emotion: ", label)
 
         # label = class_labels[preds.argmax()]
-        # label_position = (rects[i][0] + int((rects[i][1] / 2)), abs(rects[i][2] - 10))
+        label_position = (rects[i][0] + int((rects[i][1] / 2)), abs(rects[i][2] - 10))
         i = + 1
 
         # Overlay our detected emotion on the picture
