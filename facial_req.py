@@ -8,6 +8,8 @@ import imutils
 import pickle
 import time
 import cv2
+import traceback
+
 
 from train_model import train_for_facial_recog
 from headshots import capture_headshots
@@ -52,12 +54,12 @@ class FaceRecognize:
             # to 500px (to speedup processing)
             frame = vs.read()
             frame = imutils.resize(frame, width=500)
+            # frame = imutils.resize(frame, width=200, height=200, inter=cv2.INTER_AREA)
             # Detect the fce boxes
             boxes = face_recognition.face_locations(frame)
             # compute the facial embeddings for each face bounding box
             encodings = face_recognition.face_encodings(frame, boxes)
             names = []
-
 
             # loop over the facial embeddings
             for encoding in encodings:
@@ -92,25 +94,44 @@ class FaceRecognize:
                         print(currentname)
 
                     
-                    cv2.imwrite("./emotion_detection/new_imgs/"+currentname+".jpg", frame)
-
+                    oringinal_img = "./emotion_detection/new_imgs/"+currentname+".jpg"
+                    cv2.imwrite(oringinal_img, frame)
                     try:
-                        emotionImage("./emotion_detection/new_imgs/"+currentname+".jpg")
-                    except:
-                        print("not able to read image")
+                        emotionImage(oringinal_img)
+                    except  Exception as e:
+                        print("\n\n============================\n")
+                        print(e)
+                        print("Some problem for image for full path = ", oringinal_img, "\nDetails: ", e)
+                        # tb = traceback.format_exc()
+                    else:
+                        tb = "No error"
+                    finally:
+                        # print(tb)
+                        print("\n============================\n")
+                    
 
                 else:
                     self.isNewFace = True
                     # do a bit of cleanup
-                    cv2.destroyAllWindows()
-                    vs.stop()
-                    return
+                    # cv2.destroyAllWindows()
+                    # vs.stop()
+                    # return
 
                 # update the list of names
                 names.append(name)
 
             # loop over the recognized faces
             for ((top, right, bottom, left), name) in zip(boxes, names):
+                
+                # nw: left:top, right:bottom
+                # nw: left:right, top:bottom
+                # right:right + left, top:top + bottom
+                # face = frame[top:top + (bottom - top) + 100, left:left + (right - left) + 100]
+
+                # print("top, right, bottom, left", top, right, bottom, left)
+
+                cropped_face_img = "./emotion_detection/new_imgs/cropped_"+name+".jpg"
+                
                 # draw the predicted face name on the image - color is in BGR
                 cv2.rectangle(frame, (left, top), (right, bottom),
                               (0, 255, 225), 2)
@@ -120,9 +141,6 @@ class FaceRecognize:
 
             # display the image to our screen
             cv2.imshow("Facial Recognition is Running", frame)
-
-            
-
             key = cv2.waitKey(1) & 0xFF
 
             # quit when 'q' key is pressed
