@@ -53,7 +53,7 @@ class FaceRecognize:
             # grab the frame from the threaded video stream and resize it
             # to 500px (to speedup processing)
             frame = vs.read()
-            frame = imutils.resize(frame, width=500)
+            # frame = imutils.resize(frame, width=500)
             # frame = imutils.resize(frame, width=200, height=200, inter=cv2.INTER_AREA)
             # Detect the fce boxes
             boxes = face_recognition.face_locations(frame)
@@ -99,15 +99,17 @@ class FaceRecognize:
                     try:
                         emotionImage(oringinal_img)
                     except  Exception as e:
-                        print("\n\n============================\n")
-                        print(e)
-                        print("Some problem for image for full path = ", oringinal_img, "\nDetails: ", e)
+                        # print("\n\n============================\n")
+                        # print(e)
+                        # print("Some problem for image for full path = ", oringinal_img, "\nDetails: ", e)
                         # tb = traceback.format_exc()
+                        print("\n")
                     else:
                         tb = "No error"
                     finally:
                         # print(tb)
-                        print("\n============================\n")
+                        # print("\n============================\n")
+                        print("\n")
                     
 
                 else:

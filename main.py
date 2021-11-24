@@ -17,7 +17,7 @@ face_recognize.face_recog()
 
 
 
-train_for_facial_recog()
+# train_for_facial_recog()
 
 print("is new face: ", face_recognize.isNewFace)
 while True:

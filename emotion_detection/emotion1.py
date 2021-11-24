@@ -108,14 +108,17 @@ def emotionImage(imgPath):
 
         listsortedpreds = list(sortedpredsDict)
 
+        # Note: order of elif block is important here
         if listsortedpreds[0] == "Happy":
             label = "likely_happy"
         elif listsortedpreds[0] == "Neutral" and listsortedpreds[1] == "Happy":
             label = "likely_happy"
-        elif listsortedpreds[0] == "Neutral" and listsortedpreds[1] != "Happy":
-            label = "likely_neutral"
+        elif listsortedpreds[0] == "Neutral" and predsDict["Happy"] > 0.05:
+            label = "likely_happy"
         elif listsortedpreds[0] == "Surprised" and listsortedpreds[1] == "Happy":
             label = "likely_happy" 
+        elif listsortedpreds[0] == "Neutral" and listsortedpreds[1] != "Happy" and listsortedpreds[5] != "Happy":
+            label = "likely_neutral"
         else:
             label = "likely_not_happy"
 
