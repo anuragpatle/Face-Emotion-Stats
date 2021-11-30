@@ -33,9 +33,9 @@ class FaceRecognize:
         try:
             data = pickle.loads(open(encodingsP, "rb").read())
         except BaseException as err:
-        	print("Error: No file found named ", encodingsP)
-        	self.isNewFace = True
-        	return
+            print("Error: No file found named ", encodingsP)
+            self.isNewFace = True
+            return
 
         # initialize the video stream and allow the camera sensor to warm up
         # Set the ser to the followng
@@ -97,17 +97,19 @@ class FaceRecognize:
                     oringinal_img = "./emotion_detection/new_imgs/"+currentname+".jpg"
                     cv2.imwrite(oringinal_img, frame)
                     try:
-                        emotionImage(oringinal_img)
+                        emotionImage(currentname, oringinal_img)
+                    except ValueError as v:
+                        tb = "Value Error. But don't worry! This could be because of unstability of subject's face position. Trying for next captute.."
                     except  Exception as e:
                         # print("\n\n============================\n")
                         # print(e)
                         # print("Some problem for image for full path = ", oringinal_img, "\nDetails: ", e)
-                        # tb = traceback.format_exc()
+                        tb = traceback.format_exc()
                         print("\n")
                     else:
                         tb = "No error"
                     finally:
-                        # print(tb)
+                        print(tb)
                         # print("\n============================\n")
                         print("\n")
                     

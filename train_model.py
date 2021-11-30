@@ -60,3 +60,6 @@ def train_for_facial_recog():
 	# for f in all_files_in_source:
 	# 	os.rename(source_dir + f, destination_dir + f)
 
+
+if __name__ == '__main__':
+	train_for_facial_recog()
